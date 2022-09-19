@@ -11,10 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
 import java.util.List;
 
-// то что пишу сам
 @Controller
 @RequestMapping("/rest")
 public class PlayersController {

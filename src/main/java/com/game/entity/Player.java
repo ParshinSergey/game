@@ -3,10 +3,7 @@ package com.game.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-// это пишу сам
-
 @Entity
-//@Table(name = "player")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,9 +91,7 @@ public class Player {
         this.level = level;
     }
 
-    public Integer getUntilNextLevel() {
-        return untilNextLevel;
-    }
+    //public Integer getUntilNextLevel() { return untilNextLevel;}
 
     public void setUntilNextLevel(Integer untilNextLevel) {
         this.untilNextLevel = untilNextLevel;

@@ -9,13 +9,9 @@ import com.game.repository.PlayerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.net.ContentHandler;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -26,7 +22,7 @@ public class PlayerServiceImpl implements PlayerService {
     private static final long MIN_BIRTHDAY = 2000L;
     private static final long MAX_BIRTHDAY = 3000L;
 
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
     public PlayerServiceImpl(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
@@ -38,15 +34,15 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public Specification<Player> filterByName(String name) {
-        return (root,query,cb) -> name == null ? null : cb.like(root.get("name"),"%" + name + "%");
+        return (root, query, cb) -> name == null ? null : cb.like(root.get("name"),"%" + name + "%");
     }
 
     public Specification<Player> filterByTitle(String title) {
-        return (root,query,cb) -> title == null ? null : cb.like(root.get("title"),"%" + title + "%");
+        return (root, query, cb) -> title == null ? null : cb.like(root.get("title"),"%" + title + "%");
     }
 
     public Specification<Player> filterByRace(Race race) {
-        return (root,query,cb) -> race == null ? null : cb.equal(root.get("race"), race);
+        return (root, query, cb) -> race == null ? null : cb.equal(root.get("race"), race);
     }
 
     public Specification<Player> filterByProfession(Profession profession) {
@@ -54,7 +50,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public Specification<Player> filterByExperience(Integer minExperience, Integer maxExperience) {
-        return (root,query,cb)->{
+        return (root, query, cb) -> {
             if (minExperience == null && maxExperience == null) return null;
             if (minExperience == null) return cb.lessThanOrEqualTo(root.get("experience"), maxExperience);
             if (maxExperience == null) return cb.greaterThanOrEqualTo(root.get("experience"), minExperience);
@@ -63,7 +59,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public Specification<Player> filterByLevel(Integer minLevel, Integer maxLevel) {
-        return (root,query,cb)->{
+        return (root, query, cb) -> {
             if (minLevel == null && maxLevel == null) return null;
             if (minLevel == null) return cb.lessThanOrEqualTo(root.get("level"), maxLevel);
             if (maxLevel == null) return cb.greaterThanOrEqualTo(root.get("level"), minLevel);
@@ -72,7 +68,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public Specification<Player> filterByBirthday(Long after, Long before) {
-        return (root,query,cb)->{
+        return (root, query, cb) -> {
             if (after == null && before == null) return null;
             if (after == null) return cb.lessThanOrEqualTo(root.get("birthday"), new Date(before));
             if (before == null) return cb.greaterThanOrEqualTo(root.get("birthday"), new Date(after));
@@ -81,7 +77,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public Specification<Player> filterByBanned(Boolean banned) {
-        return (root,query,cb)->{
+        return (root, query, cb) -> {
             if (banned == null) return null;
             if (banned) return cb.isTrue(root.get("banned"));
             return cb.isFalse(root.get("banned"));
@@ -196,7 +192,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public void checkExperience(Integer experience) {
-        if (experience < 0 || experience > MAX_SIZE_EXPERIENCE || experience == null)
+        if (experience < 0 || experience > MAX_SIZE_EXPERIENCE)
             throw new BadRequestException("Experience is invalid");
     }
 
